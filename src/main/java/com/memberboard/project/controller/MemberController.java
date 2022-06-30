@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @Controller
@@ -22,15 +23,27 @@ public class MemberController {
     }
     @PostMapping("/Signup-form")
     public String Signup(@ModelAttribute MemberDTO memberDTO) throws IOException{
-          memberService.signup(memberDTO);
-
-        return "/boardPages/pagelist";
-
+        memberService.signup(memberDTO);
+        System.out.println(memberDTO);
+        return "redirect:/";
     }
-
     @GetMapping("/login1")
     public String login() {
         return "/boardPages/login";
+    }
+    @PostMapping ("/login")
+    public String login(@ModelAttribute MemberDTO memberDTO, HttpSession session) {
+        memberService.login(memberDTO);
+        return "redirect:/";
+    }
+
+
+    //id ajax 검사
+    @PostMapping("/idCheck")
+    public @ResponseBody String idCheck(@RequestParam("id") String id){
+        String result = memberService.idCheck(id);
+        System.out.println(result);
+        return result;
     }
 
 }

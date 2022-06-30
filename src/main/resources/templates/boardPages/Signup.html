@@ -1,19 +1,68 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script th:src="@{/js/jquery-3.6.0.min.js}"></script>
 </head>
 <body>
-    <form action="/member/Signup-form" method="post" enctype="multipart/form-data">
-        아이디:<input type="text" name="memberId"><br>
-        비밀번호:<input type="text" name="memberPassword"><br>
-        이름:<input type="text" name="memberName"><br>
-        이메일:<input type="text" name="memberEmail"><br>
-        전화번호:<input type="text" name="memberMobile"><br>
-        프로필사진<input type="File" name="memberProfile"><br>
-                <input type="submit" value="회원가입">
-    </form>
+<form action="/member/Signup-form"  method="post" enctype="multipart/form-data">
+    아이디:<input type="text" id="memberId" name="memberId" th:onblur="idCheck()" placeholder="소문 영문자로시작하는 영문자 또는 숫자 10~15자를 입력해주세요"><br>
+    비밀번호:<input type="password" id="memberPassword" name="memberPassword" th:onblur="pwCheck()" placeholder="8~16자의 영문, 숫자, 특수문자를 포함하여 입력해주세요"><br>
+    <div id="pw-check-result"></div>
+    이름:<input type="text" name="memberName"><br>
+    이메일:<input type="text" name="memberEmail"><br>
+    전화번호:<input type="text" name="memberMobile"><br>
+    프로필사진<input type="File" name="memberProfile"><br>
+    <input type="submit" value="회원가입">
+</form>
 
 </body>
+<script th:inline="javascript">
+    const idCheck = () => {
+        const id = document.getElementById("memberId").value;
+        console.log(id);
+        var reqExp = /^[a-z]+[a-z\d]{9,14}$/g;
+
+        $.ajax({
+            type: 'post',
+            url: '/member/idCheck',
+            data: {"id": id},
+            dataType: 'text',
+            success: function (result) {
+                if (result === "ok") {
+                    if (reqExp.test(id)) {
+                         alert("사용가능한 아이디입니다.");
+
+                    } else {
+                        alert("소문 영문자로시작하는 영문자 또는 숫자 10~15자를 입력해주세요");
+
+                    }
+                } else {
+                    alert("중복된 아이디입니다.");
+                }
+            },
+            error:function (){
+                alert("에러");
+            }
+        });
+
+        }
+       function pwCheck(){
+        const pw = document.getElementById("memberPassword");
+        const checkResult = document.getElementById("pw-check-result");
+        var regExp = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[$`~!@$!%*#^&\\(\\)\-_=+]).{8,16}$/;
+        if(regExp.test(pw.value)){
+            // alert("사용가능한 비밀번호입니다.");
+            checkResult.innerHTML= "사용가능한 아이디입니다."
+            checkResult.style.color="green";
+        }else{
+            // alert("8~16자의 영문, 숫자, 특수문자를 포함하여 입력해주세요");
+            checkResult.innerHTML= "8~16자의 영문, 숫자, 특수문자를 포함하여 입력해주세요"
+            checkResult.style.color="red";
+
+        }
+       }
+
+</script>
 </html>
