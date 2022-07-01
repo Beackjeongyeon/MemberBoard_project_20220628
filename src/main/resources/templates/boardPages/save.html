@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>글작성페이지입니다.</title>
+</head>
+<body>
+    <form action="/board/save" method="post" enctype="multipart/form-data">
+        작성자<input type="text" name="memberId" id="memberId" placeholder="${member.memberId}" readonly>
+        제목:<input type="text" name="boardTitle" id="boardTitle" placeholder="제목을입력해주세요"><br>
+        내용:<textarea name="boardContents" rows="5" cols="30" placeholder="내용으로 입력해주세요"></textarea><br>
+        첨부파일:<input type="file" name="boardFileName" id="boardFileName"><br>
+        <input type="submit" value="글작성">
+    </form>
+
+</body>
+</html>

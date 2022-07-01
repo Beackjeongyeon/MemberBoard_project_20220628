@@ -37,6 +37,7 @@ public class MemberDTO {
         memberDTO.setMemberPassword(memberEntity.getMemberPassword());
         memberDTO.setMemberName(memberEntity.getMemberName());
         memberDTO.setMemberEmail(memberEntity.getMemberEmail());
+        memberDTO.setMemberMobile(memberEntity.getMemberMobile());
         memberDTO.setMemberProfileName(memberEntity.getMemberProfileName());
         return memberDTO;
     }

@@ -4,9 +4,7 @@ import com.memberboard.project.dto.MemberDTO;
 import com.memberboard.project.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -19,7 +17,7 @@ public class MemberController {
     private final MemberService memberService;
     @GetMapping("/Signup1")
     public String signup() {
-        return "/boardPages/Signup";
+        return "/memberPages/Signup";
     }
     @PostMapping("/Signup-form")
     public String Signup(@ModelAttribute MemberDTO memberDTO) throws IOException{
@@ -27,13 +25,27 @@ public class MemberController {
         System.out.println(memberDTO);
         return "redirect:/";
     }
+
     @GetMapping("/login1")
     public String login() {
-        return "/boardPages/login";
+
+        return "/memberPages/login";
     }
     @PostMapping ("/login")
     public String login(@ModelAttribute MemberDTO memberDTO, HttpSession session) {
-        memberService.login(memberDTO);
+        MemberDTO loginDTO= memberService.login(memberDTO);
+        if(loginDTO !=null){
+            session.setAttribute("loginid", loginDTO.getId());
+            session.setAttribute("loginMemberId", loginDTO.getMemberId());
+            session.setAttribute("loginPassword", loginDTO.getMemberPassword());
+        return "redirect:/";
+        }else{
+            return "redirect:/memberPages/login";
+        }
+    }
+    @GetMapping("/logout")
+    public String logout(HttpSession session){
+        session.invalidate();
         return "redirect:/";
     }
 

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="header">
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+
+    </style>
+    <div id="header">
+        <div th:if="${session.logEmail}">
+          <div th:if="${session.loginMemberId.toString().equals('admin')}">
+            <a href="/member/findAll">관리자모드</a>
+          </div>
+            <div>
+          <a th:onclick="boardSave()">글작성</a>
+          <a th:onclick="logout()">로그아웃</a>
+            </div>
+    <a th:onclick="memberMypage([[${session,loginId}]])">마이페이지</a>
+        </div>
+        <div th:unless="${session.loginMemberId}">
+            <a th:onclick="memberSignup()">회원가입</a>
+            <a th:onclick="Login()">로그인</a>
+            <a th:onclick="boardSave()">글작성</a>
+            <a th:onclick="boardList()">글목록</a>
+        </div>
+    </div>
+    <script th:inline="javascript">
+        const memberMypage =(id) =>{
+            location.href="/member/myPage"+id;
+        }
+        const memberSignup = () => {
+            location.href="/member/Signup1"
+        }
+        const boardList = () => {
+            location.href="/board/pagelist1";
+        }
+        const boardSave = () => {
+            location.href="/board/save1";
+        }
+        const Login = () => {
+            location.href="/member/login1";
+        }
+        const logout = () =>{
+            location.href="/member/logout";
+        }
+
+    </script>
+</th:block>
+</html>
