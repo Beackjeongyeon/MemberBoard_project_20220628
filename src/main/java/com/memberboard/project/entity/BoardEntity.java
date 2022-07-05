@@ -43,15 +43,19 @@ public class BoardEntity {
     //게시글과 댓글작성자는 회원테이블의 아이디를 참조함
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-
     private MemberEntity memberEntity;
     //회원과 게시글이 연관관계를 맺은 후
-    public static BoardEntity toSaveEntity(BoardDTO boardDTO, MemberEntity memberEntity){
+    @OneToMany(mappedBy = "boardEntity", cascade =CascadeType.ALL,
+          orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<CommentEntity> commentEntityList = new ArrayList<>();
+
+    public static BoardEntity entitySave(BoardDTO boardDTO, MemberEntity memberEntity){
         BoardEntity boardEntity = new BoardEntity();
         boardEntity.setBoardTitle(boardDTO.getBoardTitle());
         boardEntity.setBoardWriter(memberEntity.getMemberId());//회원 아이디를 작성자로함
         boardEntity.setBoardContents(boardDTO.getBoardContents());
         boardEntity.setBoardHits(0);
+        boardEntity.setBoardFileName(boardDTO.getBoardFileName());
         boardEntity.setMemberEntity(memberEntity);
         return boardEntity;
     }

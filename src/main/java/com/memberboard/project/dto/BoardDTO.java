@@ -1,5 +1,6 @@
 package com.memberboard.project.dto;
 
+import com.memberboard.project.entity.BoardEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,5 +29,15 @@ public class BoardDTO {
         this.boardCreatedDate = boardCreatedDate;
         this.boardFile = boardFile;
         this.boardFileName = boardFileName;
+    }
+    public static BoardDTO toFind(BoardEntity boardEntity){
+        BoardDTO boardDTO = new BoardDTO();
+        boardDTO.setId(boardEntity.getId());
+        boardDTO.setBoardTitle(boardEntity.getBoardTitle());
+        boardDTO.setBoardWriter(boardEntity.getBoardWriter());
+        boardDTO.setBoardContents(boardEntity.getBoardContents());
+        boardDTO.setBoardHits(0);
+        boardDTO.setBoardFileName(boardEntity.getBoardFileName());
+        return boardDTO;
     }
 }
